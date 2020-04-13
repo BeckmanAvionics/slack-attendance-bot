@@ -36,10 +36,28 @@ app.post('/handle',function(request,response){
       var today = new Date();
       //console.log(today);
       var date = "" + today.getFullYear() + "-" +(today.getMonth()+1) + "-" + today.getDate();
-      glob("logs/*.json", function (er, files) {
-		console.log(files);	
-	  });
-      
+	 
+      var file = glob.sync("logs/*.json");
+		
+	  
+	  console.log(file);	
+
+      if(file.includes("logs/"+date+".json")) {
+		  var data = fs.readFileSync("logs/"+date+".json");
+	      var inputD = JSON.parse(data);
+	  }
+	  else {
+		  var inputD = {
+			 "students": []
+		  };
+	  }
+	  console.log(inputD); 
+	  inputD["students"].push(request.body.user_name);
+	  console.log(inputD); 
+	  var outData = JSON.stringify(inputD);
+	  fs.writeFileSync("logs/"+date+".json", outData);
+	  response.send("Login Successful");
+
     } else {
       response.send("Failed to login, bad password");
       console.log(request.body.user_name + "Failed to login, bad password");
