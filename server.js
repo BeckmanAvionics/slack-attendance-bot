@@ -1,6 +1,11 @@
 
 var admins = ["ashwingupta2000"];
 
+/*
+!!!
+need to make a timeout for polls
+!!!
+*/
 
 var express = require("express");
 var bodyParser = require("body-parser");
@@ -9,7 +14,8 @@ var fs = require('fs');
 var app = express();
 var pwd = "never-use-me";
 //Here we are configuring express to use body-parser as middle-ware.
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+	extended: false }));
 app.use(bodyParser.json());
 
 app.post('/handle',function(request,response){
@@ -17,9 +23,36 @@ app.post('/handle',function(request,response){
   
  // console.log("recieved POST");
    //response.sendStatus(200);
+	
+function pollActive(){
+	return true;
+}
   
-  
-  
+if(request.body.command == "/makepoll") {
+    if(admins.includes(request.body.user_name)) {
+      if(!isNaN(request.body.text)){
+	response.send("Made poll for");
+     	 console.log("Made Poll for");
+      }
+	    else{
+	    response.send("Poll not created, input not a number);
+	    }
+    } 
+	else {
+      response.send("Failed to make poll, you don't have permission");
+      console.log(request.body.user_name + " does not have permission to set pwd");
+    }
+  }
+	
+if(request.body.command == "/poll"){
+	if(pollActive()){
+	
+	}
+	else{
+		
+	}
+}
+	
   if(request.body.command == "/setpwd") {
     if(admins.includes(request.body.user_name)) {
       pwd = request.body.text; 
