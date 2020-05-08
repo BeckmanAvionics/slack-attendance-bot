@@ -13,6 +13,9 @@ var fs = require('fs');
 var app = express();
 var poll_pwd = "never-use-me";
 var attendance_pwd = "also-dont-use-me";
+var poll_status = new Boolean();
+var init_time = new Date();
+
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({
     extended: false
@@ -26,7 +29,27 @@ app.post('/handle', function(request, response) {
     //response.sendStatus(200);
 
     function pollActive() {
-        return true;
+        if (poll_status) {
+            hours = init_time.getHours();
+            var end_hour = hours + 24;
+            if (hours < end_hour) {
+                return poll_status;
+            } else {
+                poll_status = Boolean(False);
+                return poll_status;
+            }
+        }
+    }
+
+    if (request.body.command == "/setpollpwd") {
+        if (admins.includes(request.body.user_name)) {
+            poll_pwd = request.body.text;
+            response.send("Set poll password to: " + poll_pwd);
+            console.log("Set poll password to: " + poll_pwd);
+        } else {
+            response.send("Failed to set password, you don't have permission");
+            console.log(request.body.user_name + " does not have permission to set pwd");
+        }
     }
 
     if (request.body.command == "/makepoll") {
@@ -34,9 +57,7 @@ app.post('/handle', function(request, response) {
             if (!isNaN(request.body.text)) {
                 var today = new Date("2020-05-07");
                 response.write("Made poll for " + today);
-                poll_pwd = request.body.text;
-                response.send("Set poll password to: " + poll_pwd);
-                console.log("Set poll password to: " + poll_pwd);
+                poll_status = Boolean(True);
             } else {
                 response.send("Poll not created, input not a number");
             }
@@ -77,11 +98,12 @@ app.post('/handle', function(request, response) {
         } else {
             response.send("The poll time has expired");
             consolee.log(request.body.user_name + "attempted to check-in past the allotted time");
+            poll_status = Boolean(False);
         }
     }
 
     // setpwd and login commands for reference - regular attendance
-    if (request.body.command == "/setpwd") {
+    if (request.body.command == "/setattendancepwd") {
         if (admins.includes(request.body.user_name)) {
             attendance_pwd = request.body.text;
             response.send("Set password to: " + attendance_pwd);
