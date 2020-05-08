@@ -31,22 +31,15 @@ app.post('/handle', function(request, response) {
 
     if (request.body.command == "/makepoll") {
         if (admins.includes(request.body.user_name)) {
-            var today = new Date("2020-05-07");
-            response.write("Made poll for " + today);
-
-            poll_pwd = request.body.text;
-            response.send("Set poll password to: " + poll_pwd);
-            console.log("Set poll password to: " + poll_pwd);
-            /*
             if (!isNaN(request.body.text)) {
-                response.send("Made poll for ");
-                console.log("Made Poll for ");
-            }  
-
-            else {
+                var today = new Date("2020-05-07");
+                response.write("Made poll for " + today);
+                poll_pwd = request.body.text;
+                response.send("Set poll password to: " + poll_pwd);
+                console.log("Set poll password to: " + poll_pwd);
+            } else {
                 response.send("Poll not created, input not a number");
-            } */
-
+            }
         } else {
             response.send("Failed to make poll, you don't have permission");
             console.log(request.body.user_name + " does not have permission to make poll");
