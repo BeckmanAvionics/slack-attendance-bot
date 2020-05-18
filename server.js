@@ -6,6 +6,7 @@ need to make a timeout for polls
 !!!
 */
 
+
 var express = require("express");
 var bodyParser = require("body-parser");
 var glob = require("glob");
@@ -46,6 +47,13 @@ app.post('/handle', function(request, response) {
             poll_pwd = request.body.text;
             response.send("Set poll password to: " + poll_pwd);
             console.log("Set poll password to: " + poll_pwd);
+
+
+    if (request.body.command == "/setpwd") {
+        if (admins.includes(request.body.user_name)) {
+            pwd = request.body.text;
+            response.send("Set password to: " + pwd);
+            console.log("Set password to: " + pwd);
         } else {
             response.send("Failed to set password, you don't have permission");
             console.log(request.body.user_name + " does not have permission to set pwd");
@@ -163,7 +171,7 @@ app.post('/handle', function(request, response) {
             }
         }
     }
-    /// Works with UI
+
 
     response.end();
 
@@ -174,3 +182,4 @@ app.listen(8000, function() {
 
     console.log("Started Server on PORT 8000");
 })
+
