@@ -47,6 +47,12 @@ app.post('/handle', function(request, response) {
             poll_pwd = request.body.text;
             response.send("Set poll password to: " + poll_pwd);
             console.log("Set poll password to: " + poll_pwd);
+        }
+        else {
+            response.send("Failed to set poll password, you don't have permission");
+            console.log(request.body.user_name + " does not have permission to set poll pwd");
+        }
+    }
 
 
     if (request.body.command == "/setpwd") {
