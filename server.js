@@ -32,6 +32,13 @@ app.post('/handle', function(request, response) {
     // console.log("recieved POST");
     //response.sendStatus(200);
 
+    function attendanceActive(){
+        if(attendance_acitve&&((!attendance_timer)||(attendance_timer&&init_time.getHours<attendance_end))){
+           return true;
+        }
+        return false;
+    }
+
     function pollActive() {
         if (poll_status) {
             hours = init_time.getHours();
@@ -131,7 +138,7 @@ app.post('/handle', function(request, response) {
 
 
     if (request.body.command == "/login") {
-        if (request.body.text == attendance_pwd) {
+        if (request.body.text == attendance_pwd&&attendanceActive()) {
             var today = new Date();
             //console.log(today);
             var date = "" + today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
@@ -157,8 +164,7 @@ app.post('/handle', function(request, response) {
             response.send("Login Successful");
 
         } else {
-            response.send("Failed to login, bad password");
-            console.log(request.body.user_name + "Failed to login, bad password");
+            response.send("Failed to login, bad password and/or poll has expired");
         }
 
     }
