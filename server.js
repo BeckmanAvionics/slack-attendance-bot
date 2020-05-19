@@ -33,7 +33,7 @@ app.post('/handle', function(request, response) {
     //response.sendStatus(200);
 
     function attendanceActive(){
-        if(attendance_acitve&&((!attendance_timer)||(attendance_timer&&init_time.getHours<attendance_end))){
+        if(attendance_active&&((!attendance_timer)||(attendance_timer&&init_time.getHours<attendance_end))){
            return true;
         }
         return false;
@@ -169,10 +169,8 @@ app.post('/handle', function(request, response) {
 
     }
 
-    /// Works with UI - can someone verify that this will return the json contents of the requested file?
     // Ensure that the UI application is the source of the request.
     if (request.body.token == "UI") {
-
         // Exclude '/' to disallow users from sending these commands.
         if (request.body.command == "attendance" || request.body.command == "poll") {
             var file = glob.sync(request.body.command + "_logs/*.json");
@@ -182,10 +180,11 @@ app.post('/handle', function(request, response) {
 
             if (file.includes(fileName)) {
                 response.send(fs.readFileSync(fileName));
+            } else {
+                response.send("File Not Found: " + fileName);
             }
         }
     }
-
 
     response.end();
 
