@@ -57,9 +57,9 @@ app.post('/handle', function(request, response) {
 
     if (request.body.command == "/setpwd") {
         if (admins.includes(request.body.user_name)) {
-            pwd = request.body.text;
-            response.send("Set password to: " + pwd);
-            console.log("Set password to: " + pwd);
+            attendance_pwd = request.body.text;
+            response.send("Set password to: " + attendance_pwd);
+            console.log("Set password to: " + attendance_pwd);
         } else {
             response.send("Failed to set password, you don't have permission");
             console.log(request.body.user_name + " does not have permission to set pwd");
