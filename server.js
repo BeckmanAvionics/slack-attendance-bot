@@ -16,6 +16,9 @@ var poll_pwd = "never-use-me";
 var attendance_pwd = "also-dont-use-me";
 var poll_status = new Boolean();
 var init_time = new Date();
+var attendance_end;
+var attendance_timer = false;
+var attendance_active = false;
 
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({
@@ -55,11 +58,21 @@ app.post('/handle', function(request, response) {
     }
 
 
-    if (request.body.command == "/setpwd") {
+    if (request.body.command == "/setattendancepwd") {
         if (admins.includes(request.body.user_name)) {
-            attendance_pwd = request.body.text;
-            response.send("Set password to: " + attendance_pwd);
-            console.log("Set password to: " + attendance_pwd);
+            if(request.body.text.indexOf(,)>-1){
+                attendance_pwd = request.body.text.substring(0,request.body.text.indexOf(,));
+                attendance_end = init_time.getHours()+parseInt(request.body.text.substring(request.body.indexOf(,)+1);
+                attendance_timer=true;
+                attendance_active = true;
+            }
+            else{
+                attendance_pwd = request.body.text;
+                attendance_timer = false;
+                attendance_active = true;
+                response.send("Set password to: " + attendance_pwd + ", no timer");
+                console.log("Set password to: " + attendance_pwd + ", no timer");
+            }
         } else {
             response.send("Failed to set password, you don't have permission");
             console.log(request.body.user_name + " does not have permission to set pwd");
@@ -116,17 +129,6 @@ app.post('/handle', function(request, response) {
         }
     }
 
-    // setpwd and login commands for reference - regular attendance
-    if (request.body.command == "/setattendancepwd") {
-        if (admins.includes(request.body.user_name)) {
-            attendance_pwd = request.body.text;
-            response.send("Set password to: " + attendance_pwd);
-            console.log("Set password to: " + attendance_pwd);
-        } else {
-            response.send("Failed to set password, you don't have permission");
-            console.log(request.body.user_name + " does not have permission to set pwd");
-        }
-    }
 
     if (request.body.command == "/login") {
         if (request.body.text == attendance_pwd) {
