@@ -72,8 +72,8 @@ app.post('/handle', function(request, response) {
                 attendance_end = init_time.getHours()+parseInt(request.body.text.substring(request.body.text.indexOf(",")+1));
                 attendance_timer=true;
                 attendance_active = true;
-                response.send("Set password to: " + attendance_pwd + ", " + parseInt(request.body.text.substring(request.body.text.indexOf(",")+1) + "hr timer");
-                console.log("Set password to: " + attendance_pwd + ", " + parseInt(request.body.text.substring(request.body.text.indexOf(",")+1) + "hr timer");
+                response.send("Set password to: " + attendance_pwd + ", " + parseInt(request.body.text.substring(request.body.text.indexOf(",")+1)) + "hr timer");
+                console.log("Set password to: " + attendance_pwd + ", " + parseInt(request.body.text.substring(request.body.text.indexOf(",")+1)) + "hr timer");
             }
             else{
                 attendance_pwd = request.body.text;
