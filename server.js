@@ -69,9 +69,11 @@ app.post('/handle', function(request, response) {
         if (admins.includes(request.body.user_name)) {
             if(request.body.text.indexOf(",")>-1){
                 attendance_pwd = request.body.text.substring(0,request.body.text.indexOf(","));
-                attendance_end = init_time.getHours()+1; //parseInt(request.body.text.substring(request.body.indexOf(",")+1));
+                attendance_end = init_time.getHours()+parseInt(request.body.text.substring(request.body.text.indexOf(",")+1));
                 attendance_timer=true;
                 attendance_active = true;
+                response.send("Set password to: " + attendance_pwd + ", " + parseInt(request.body.text.substring(request.body.text.indexOf(",")+1) + "hr timer");
+                console.log("Set password to: " + attendance_pwd + ", " + parseInt(request.body.text.substring(request.body.text.indexOf(",")+1) + "hr timer");
             }
             else{
                 attendance_pwd = request.body.text;
@@ -193,6 +195,6 @@ app.post('/handle', function(request, response) {
 app.listen(9500, function() {
 
 
-    console.log("Started Server on PORT 8000");
+    console.log("Started Server on PORT 9500");
 })
 
