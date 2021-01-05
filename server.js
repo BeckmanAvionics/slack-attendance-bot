@@ -69,7 +69,7 @@ app.post('/handle', function(request, response) {
         if (admins.includes(request.body.user_name)) {
             if(request.body.text.indexOf(",")>-1){
                 attendance_pwd = request.body.text.substring(0,request.body.text.indexOf(","));
-                attendance_end = init_time.getHours()+parseInt(request.body.text.substring(request.body.indexOf(",")+1));
+                attendance_end = init_time.getHours()+1; //parseInt(request.body.text.substring(request.body.indexOf(",")+1));
                 attendance_timer=true;
                 attendance_active = true;
             }
