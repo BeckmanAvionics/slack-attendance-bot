@@ -1,4 +1,4 @@
-var admins = ["jonathonbower14"];
+var admins = ["eric.ho", "kaylee"];
 
 /*
 !!!
@@ -192,9 +192,9 @@ app.post('/handle', function(request, response) {
 
 });
 
-app.listen(9500, function() {
+app.listen(8080, function() {
 
 
-    console.log("Started Server on PORT 9500");
+    console.log("Started Server on PORT 8080");
 })
 
